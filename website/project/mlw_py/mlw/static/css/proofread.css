@@ -1,0 +1,22 @@
+th, td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#stringcontent {
+    text-align: left;
+}
+
+textarea {
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+a:hover {
+    color: #9d1a1a;
+}
+
+.modal-body {
+    overflow-y: auto;
+}

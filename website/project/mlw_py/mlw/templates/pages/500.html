@@ -1,0 +1,20 @@
+<head>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/500.css') }}"
+    />
+</head>
+<body>
+    <div>
+        <span class='error-num'>5</span>
+        <div class='eye'></div>
+        <div class='eye'></div>
+        <p class='sub-text'>伺服器發生錯誤，請稍後再試，如果問題持續發生，請通知管理員 {{ maintainer }}</p>
+        <a href=''>Go back</a>
+    </div>
+</body>
+
+
+
+{% include "common_js.html" %}
+<script src="{{ url_for('static', filename='js/500.js') }}"></script>

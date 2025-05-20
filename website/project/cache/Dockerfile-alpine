@@ -1,0 +1,17 @@
+FROM python:3.13-alpine3.20
+
+WORKDIR /app
+
+COPY ./website/project/cache/cache/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN apk add --no-cache tzdata
+ENV TZ="Asia/Taipei"
+
+# Install necessary packages (vim)
+RUN apk update && apk upgrade && \
+    apk add --no-cache vim bash
+
+CMD [ "python", "main.py" ]
+# CMD ["gunicorn", "-b", "0.0.0.0:80", "-w", "5", "-t", "90", "-k", "gthread", "--thread=2", "main:app"]
+

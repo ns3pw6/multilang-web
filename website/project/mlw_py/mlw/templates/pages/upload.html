@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- css area -->
+    {% include "common_css.html" %}
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/fileupload.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/upload.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+    />
+
+    <title>多國語系統</title>
+  </head>
+
+  <body>
+    <!-- include header -->
+    {% with username=session['username'], test_mode=session['test_mode'] %} 
+        {% include "header.html" %} 
+    {% endwith %}
+
+    <!-- include sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- include page title -->
+    <main id="main" class="main">
+      {% include "page_title.html" %}
+
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">上傳</h5>
+                <!-- New String From SVN Tabs -->
+                <ul
+                  class="nav nav-tabs d-flex"
+                  id="importNewString"
+                  role="tablist"
+                >
+                  <li class="nav-item flex-fill" role="presentation">
+                    <button
+                      class="nav-link w-100 active"
+                      id="svn-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#newstring-justified"
+                      type="button"
+                      role="tab"
+                      aria-controls="StringID"
+                      aria-selected="true"
+                    >
+                      新字串
+                    </button>
+                  </li>
+                  <li class="nav-item flex-fill" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="excel-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#excel-justified"
+                      type="button"
+                      role="tab"
+                      aria-controls="excel"
+                      aria-selected="false"
+                    >
+                      Excel
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content pt-2" id="searchContent">
+                  <!-- New String Tab -->
+                  <div
+                    class="tab-pane fade show active"
+                    id="newstring-justified"
+                    role="tabpanel"
+                    aria-labelledby="stringid-tab"
+                  >
+                    <div
+                      class="alert alert-warning alert-dismissible fade show"
+                      role="alert"
+                    >
+                      請先新增App後再上傳新字串!
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form id="svn-upload" class="row g-3" method="POST">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          <select
+                            class="form-select"
+                            id="selectedPlatform"
+                            aria-label="平台"
+                            name="select-platform"
+                          >
+                            <option p_id="-1" selected disabled>
+                              --選擇平台--
+                            </option>
+                            {% for p_id, p_name in platforms.items() %} {% if
+                            p_id == 8 or p_id == 9 %}
+                            <option value="{{ p_id }}" disabled>
+                              {{ p_name }}
+                            </option>
+                            {% else %}
+                            <option value="{{ p_id }}">{{ p_name }}</option>
+                            {% endif %} {% endfor %}
+                          </select>
+                          <label for="selectedPlatform">平台</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3">
+                          <select
+                            class="form-select"
+                            id="selectedApp"
+                            aria-label="平台"
+                            name="select-app"
+                          >
+                            <option value="-1" selected disabled>
+                              --選擇App--
+                            </option>
+                          </select>
+                          <label for="selectedApp">App</label>
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <button type="reset" class="btn btn-secondary">
+                          重置
+                        </button>
+                        <button
+                          id="newString"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          送出
+                        </button>
+                      </div>
+                    </form>
+                    <!-- End floating Labels Form -->
+                  </div>
+                  <!-- End New String Tab -->
+                  <!-- Excel Tab -->
+                  <div
+                    class="tab-pane fade"
+                    id="excel-justified"
+                    role="tabpanel"
+                    aria-labelledby="excel-tab"
+                  >
+                    <h5 class="card-title">瀏覽或拖曳上傳Excel</h5>
+                    <form id="excel-upload" class="row g-3" method="POST">
+                      <div class="drag-area">
+                        <span class="upload-header">Drag & Drop</span>
+                        <span class="upload-header"
+                          >or
+                          <span class="button" id="files_btn"
+                            >browse files</span
+                          ></span
+                        >
+                        <span class="upload-header"
+                          >or
+                          <span class="button" id="folder_btn"
+                            >browse folder</span
+                          ></span
+                        >
+                        <input
+                          id="fileselect"
+                          type="file"
+                          name="fileselect[]"
+                          multiple="multiple"
+                          hidden
+                          accept=".xlsx"
+                        />
+                        <input
+                          id="folderselect"
+                          type="file"
+                          webkitdirectory
+                          directory
+                          hidden
+                        />
+                      </div>
+                      <section class="progress-area"></section>
+                      <section class="uploaded-area"></section>
+                      <div id="messagesfolder"></div>
+                      <div class="col-12">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="force-check"
+                            name="force-update"
+                          />
+                          <label class="form-check-label" for="force-check">
+                            如需強制覆蓋現有字串請勾選
+                          </label>
+                        </div>
+                      </div>
+                      <div class="text-center">
+                        <button type="reset" class="btn btn-secondary">
+                          重置
+                        </button>
+                        <button
+                          id="excelString"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          上傳
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- End Excel Tab -->
+                </div>
+                <!-- End Search Tabs -->
+              </div>
+            </div>
+            <!-- svn upload block -->
+            <div id="upload-card" class="card">
+              <div id="upload-body" class="card-body">
+                <h5 class="card-title">上傳</h5>
+                <ul
+                  class="nav nav-tabs d-flex"
+                  id="importNewString"
+                  role="tablist"
+                >
+                  <li class="nav-item flex-fill" role="presentation">
+                    <button
+                      class="nav-link w-100 active"
+                      id="insert-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#insert-justified"
+                      type="button"
+                      role="tab"
+                      aria-controls="insert-tab"
+                      aria-selected="true"
+                    >
+                      新增字串
+                    </button>
+                  </li>
+                  <li class="nav-item flex-fill" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="update-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#update-justified"
+                      type="button"
+                      role="tab"
+                      aria-controls="update-tab"
+                      aria-selected="false"
+                    >
+                      更新字串
+                    </button>
+                  </li>
+                  <li class="nav-item flex-fill" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="remove-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#remove-justified"
+                      type="button"
+                      role="tab"
+                      aria-controls="remove-tab"
+                      aria-selected="false"
+                    >
+                      刪除字串
+                    </button>
+                  </li>
+                </ul>
+                <div id="uploadcontent" class="tab-content pt-2">
+                  <div
+                    id="insert-justified"
+                    class="tab-pane fade active show"
+                    role="tabpanel"
+                    aria-labelledby="stringid-tab"
+                  >
+                    <form action="#">
+                      <table
+                        id="insert-table"
+                        class="table table-hover table-bordered"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="row" class="select-all">
+                              <input type="checkbox" id="select-all" />
+                            </th>
+                            <th scope="col-namespace" style="width: 30%">
+                              namespace
+                            </th>
+                            <th scope="col-eng">英文</th>
+                            <th scope="col-ops">options</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+
+                      <div id="BtnContainer">
+                        <button id="insertBtn" class="btn btn-primary">
+                          新增
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div
+                    id="update-justified"
+                    class="tab-pane fade"
+                    role="tabpanel"
+                    aria-labelledby="update-tab"
+                  >
+                    <form action="#">
+                      <table
+                        id="update-table"
+                        class="table table-hover table-bordered"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="row" class="select-all">
+                              <input type="checkbox" />
+                            </th>
+                            <th scope="col" style="width: 30%">namespace</th>
+                            <th scope="col">目前英文</th>
+                            <th scope="col">新版英文</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                      <div id="BtnContainer">
+                        <button id="updateBtn" class="btn btn-primary">
+                          更新
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div
+                    id="remove-justified"
+                    class="tab-pane fade"
+                    role="tabpanel"
+                    aria-labelledby="remove-tab"
+                  >
+                    <form action="#">
+                      <table
+                        id="remove-table"
+                        class="table table-hover table-bordered"
+                      >
+                        <thead>
+                          <tr>
+                            <th scope="row" class="select-all">
+                              <input type="checkbox" />
+                            </th>
+                            <th scope="col">namespace</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                      <div id="BtnContainer">
+                        <button id="removeBtn" class="btn btn-primary">
+                          刪除
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End svn upload block -->
+            <div id="excel-upload-block" class="card">
+              <div id="excel-upload-body" class="card-body">
+                <h5 class="card-title">Excel上傳錯誤訊息</h5>
+                <div id="excel-upload-error-container">
+                  <table
+                    id="excel-upload-error"
+                    class="table table-hover table-bordered"
+                  >
+                    <thead>
+                      <tr>
+                        <th scope="col">錯誤訊息</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    {% include "modal.html" %}
+    <!-- js area -->
+    {% include "common_js.html" %}
+
+    <!-- my js -->
+    <script src="{{ url_for('static', filename='js/dragnbrowse.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  </body>
+</html>

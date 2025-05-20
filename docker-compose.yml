@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+  mlw_py:
+    container_name: mlw_py
+    restart: always
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./website/project/mlw_py/Dockerfile-alpine
+    ports:
+      - "8001:80"
+    volumes:
+      - ./website/project/mlw_py/mlw:/usr/src/app
+      - cache:/usr/src/app/rep/translation/cache:ro
+    networks:
+      - shared
+
+  cache-services:
+    container_name: cache-services
+    restart: always
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./website/project/cache/Dockerfile-alpine
+    ports:
+      - "8002:80"
+    volumes:
+      - ./website/project/cache/cache:/app
+      - cache:/app/data/cache:rw
+    networks:
+      - shared
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./website/nginx/Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./website/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - mlw_py
+      - cache-services
+    networks:
+      - shared
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    platform: linux/amd64
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Taipei
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - db:/var/lib/mysql
+    networks:
+      - shared
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    platform: linux/amd64
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      UPLOAD_LIMIT: 300M
+    ports:
+      - "8080:80"
+    networks:
+      - shared
+
+  redis:
+    image: redis:latest
+    platform: linux/amd64
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - shared
+
+volumes:
+  db:
+  cache:
+
+networks:
+  shared:

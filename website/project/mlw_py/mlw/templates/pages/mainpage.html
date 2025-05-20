@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>多國語系統</title>
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+    </head>
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+        <main id="main" class="main">
+
+          {% include "page_title.html" %}
+        
+            <section class="section">
+              <div class="row">
+                <div class="col-lg-6">
+        
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Example Card</h5>
+                      <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+                    </div>
+                  </div>
+        
+                </div>
+        
+                <div class="col-lg-6">
+        
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Example Card</h5>
+                      <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+                    </div>
+                  </div>
+        
+                </div>
+              </div>
+            </section>
+        
+          </main><!-- End #main -->
+          {% include "modal.html" %}
+        <!-- js area -->
+        {% include "common_js.html" %}
+    </body>
+</html>

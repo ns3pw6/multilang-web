@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">語言</h5>
+                                <!-- Language Tabs -->
+                                <ul
+                                    class="nav nav-tabs d-flex"
+                                    id="searchTabjustified"
+                                    role="tablist"
+                                >
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100 active"
+                                            id="home-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#new-lang-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="new-lang"
+                                            aria-selected="true"
+                                        >
+                                            新增語言
+                                        </button>
+                                    </li>
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100"
+                                            id="string-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#modify-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="modify"
+                                            aria-selected="false"
+                                        >
+                                            修改語言
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div
+                                    class="tab-content pt-2"
+                                    id="searchContent"
+                                >
+                                    <!-- New Language Tab -->
+                                    <div
+                                        class="tab-pane fade show active"
+                                        id="new-lang-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="new-lang-tab"
+                                    >
+                                        <form id="new-lang-form" class="row g-3" method="POST">
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="tag"
+                                                        name="new-lang-tag"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >tag</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="lang-en"
+                                                        name="new-lang-en"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >語言(請輸入英文)</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="lang-zh"
+                                                        name="new-lang-zh"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >語言(請輸入中文)</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    送出
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!-- End floating Labels Form -->
+                                    </div>
+                                    <!-- End New Language Tab -->
+                                    <!-- Modify Language Tab -->
+                                    <div
+                                        class="tab-pane fade"
+                                        id="modify-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="modify-tab"
+                                    >
+                                        <form id="modify-lang-form" class="row g-3" method="POST">
+                                            <div class="col-md-12">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select"
+                                                        id="language-select"
+                                                        aria-label="language"
+                                                        name="language-select"
+                                                    >
+                                                        <option value="-1" selected disabled>
+                                                            --請選擇語言--
+                                                        </option>
+                                                        {% for lang_id, lang_name in languages.items() %}
+                                                         <option value="{{ lang_id }}">{{ lang_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label
+                                                        for="stringSearchSelectApp"
+                                                        >language</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div id="tag-div" class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="tag"
+                                                        name="modify-lang-tag"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >tag</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div id="en-div" class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="lang-en"
+                                                        name="modify-lang-en"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >語言(請輸入英文)</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div id="zh-div" class="col-md-4">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="lang-zh"
+                                                        name="modify-lang-zh"
+                                                        required
+                                                    />
+                                                    <label for="floatingString"
+                                                        >語言(請輸入中文)</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    送出
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- End Modify Language Tab -->
+                                </div>
+                                <!-- End Language Tabs -->
+                            </div>
+                        </div>
+                        <div class="card" style="display: none">
+                            <div class="card-body">
+                                <div class="card-title"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        {% include "modal.html" %}
+        <!-- js area -->
+        {% include "common_js.html" %}
+
+        <!-- my js -->
+        <script src="{{ url_for('static', filename='js/language.js') }}"></script>
+    </body>
+</html>

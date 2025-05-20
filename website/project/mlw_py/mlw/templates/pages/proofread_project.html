@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/proofread.css') }}"
+        />
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">專案設定區</h5>
+                                <form id="project-setting-form" class="row g-3">
+                                    <div class="col-md-12">
+                                        <div id="project-name" class="form-floating">
+                                            <input name="project-name" type="text" class="form-control" id="project-string" placeholder="專案名稱" value="{{ project_name }}">
+                                            <label for="project-name">專案名稱</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div id="spec-link" class="form-floating">
+                                            <input name="spec-link" type="text" class="form-control" id="spec-link" placeholder="spec連結" value="{{ spec_link }}">
+                                            <label for="spec-link">Spec連結</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div id="updateBtn" class="text-center">
+                                            <button type="submit" class="btn btn-primary" >更新</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">專案字串區</h5>
+                                <form id="insert-string-form" class="row">
+                                    <div class="col-sm-11">
+                                        <div id="insertContent">
+                                            <input name="content" type="text" class="form-control" id="insert_string" placeholder="請在此輸入要新增的字串...">
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="insertBtn" class="col-sm-1">
+                                        <button type="submit" class="btn btn-primary" >新增</button>
+                                    </div>
+                                </form>    
+                                <div class="row g-3 in p-3">
+                                    <div>
+                                        <button type="button" class="btn btn-danger rounded-pill" disabled>
+                                            <i class="bi bi-arrow-up-circle">匯入Excel</i>
+                                        </button>
+                                        <button type="button" class="btn btn-primary rounded-pill" onclick="download_excel()">
+                                            <i class="bi bi-arrow-down-circle">匯出Excel</i>
+                                        </button>
+                                        <button type="button" class="btn btn-success rounded-pill" onclick="proofread_finished()">
+                                            <i class="bi bi-check-circle">校閱完畢</i>
+                                        </button>
+                                        <button type="button" class="btn btn-warning rounded-pill" onclick="change_person_in_charge()">
+                                            <i class="bi bi-star me-1">我是負責人</i>
+                                        </button>
+                                        <button type="button" class="btn btn-info rounded-pill" onclick="get_log()">
+                                            <i class="bi bi-info-circle">編輯紀錄</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Table with stripped rows -->
+                                <table class="table datatable table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>字串</th>
+                                            <th style="width: 10rem;">修改</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for str_id,  string in strings %}
+                                            <tr>
+                                                <td id="stringcontent">
+                                                    <span>{{ string }}</span>
+                                                    <textarea>{{ string }}</textarea>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary edit-btn" >修改</button>
+                                                    <button class="btn btn-danger remove-btn" onclick="remove_string(this, {{str_id}})">刪除</button>
+                                                    <button class="btn btn-primary save-btn" onclick="update_string(this, {{str_id}})" style="display: none">儲存</button>
+                                                    <button class="btn btn-secondary cancel-btn" style="display: none">取消</button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
+                            </div>
+                            <div id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        {% include "modal.html" %}
+        <!-- js area -->
+        {% include "common_js.html" %}
+        <script src="{{ url_for('static', filename='js/proofread.js') }}"></script>
+    </body>
+</html>

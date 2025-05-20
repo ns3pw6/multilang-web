@@ -1,0 +1,9 @@
+.table td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+#search-old-log {
+    color: red;
+    cursor: pointer;
+}

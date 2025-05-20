@@ -1,0 +1,99 @@
+/* Table Layout */
+.expand-button {
+    position: relative;
+    width: 34px;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.expand-button::before {
+    content: '\F4FE'; /* Bootstrap Icons plus symbol unicode */
+    font-family: 'bootstrap-icons';
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.expand-button.expanded::before {
+    transform: rotate(45deg);
+}
+
+#stringIDcol {
+    width: 7rem;
+    vertical-align: middle;
+}
+
+#stringContent {
+    vertical-align: middle;
+    width: 70%;
+}
+
+/* Translations Table */
+.translations-table {
+    width: 100%;
+}
+
+.translations-table #lang {
+    width: 20%;
+}
+
+.translations-table #modifyString {
+    width: 5rem;
+}
+
+/* Hide Row Animation */
+.hide-table-padding {
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    will-change: height, padding;
+}
+
+.hide-table-padding.collapsed {
+    height: 0 !important;
+    padding: 0;
+}
+
+.hide-table-padding td {
+    vertical-align: middle;
+    text-align: left;
+    padding: .5rem;
+    transition: padding 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: padding;
+}
+
+.hide-table-padding.collapsed td {
+    padding: 0;
+}
+
+/* Form Elements */
+textarea {
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+/* Scroll Container */
+#scrollContainer {
+    overflow-y: auto;
+    max-height: 900px;
+}
+
+/* Sticky Header */
+th {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 10;
+}
+
+.translations-table td.text-center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.translations-table .edit-btn {
+    margin: 0 auto;
+    display: block;
+}

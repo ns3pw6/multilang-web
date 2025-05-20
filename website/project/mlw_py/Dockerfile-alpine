@@ -1,0 +1,20 @@
+FROM python:3.13-alpine3.20
+
+WORKDIR /usr/src/app
+
+COPY ./website/project/mlw_py/mlw/requirements.txt ./
+# COPY ./website/project/mlw_py/mlw/ /usr/src/app
+RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+
+# Install necessary packages (vim)
+RUN apk update && apk upgrade && \
+    apk add --no-cache vim bash subversion
+
+RUN apk add --no-cache tzdata
+ENV TZ="Asia/Taipei"
+
+# For debugging purposes
+# CMD [ "python", "main.py" ]
+# For production use
+CMD ["gunicorn", "-b", "0.0.0.0:80", "-w", "5", "-t", "90", "-k", "gthread", "--thread=2", "main:app"]
+

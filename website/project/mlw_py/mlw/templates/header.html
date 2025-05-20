@@ -1,0 +1,66 @@
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+        <a href="{{ url_for('mlw') }}" class="logo d-flex align-items-center">
+            <span class="d-none d-lg-block">多國語系統</span>
+        </a>
+        
+    </div>
+    <!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center hover-container">
+            {% if test_mode %}
+            <span class="d-none d-md-block ps-2 warning-container">
+                <i class="bi bi-exclamation-triangle-fill warning"></i>
+                <a class="warning">測試模式啟用中</a>
+                <span class="tooltip-text">測試模式下所有更動不會被進行更新!</span>
+            </span> 
+            {% endif %}
+            <li class="nav-item dropdown pe-3">
+                <a
+                    class="nav-link nav-profile d-flex align-items-center pe-0"
+                    href="#"
+                    data-bs-toggle="dropdown"
+                >
+                    <span class="d-none d-md-block dropdown-toggle ps-2">
+                        您好: {{ username }}
+                    </span> 
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul
+                    class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                >
+                    <li class="dropdown-header">
+                        <h6>{{ username }}</h6>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center">
+                            <label for="testModeToggle" class="form-check-label">
+                                <i class="bi bi-gear"></i>
+                                <span>測試模式</span>
+                            </label>
+                            <div class="form-check form-switch ms-auto">
+                                <input class="form-check-input" type="checkbox" id="testModeToggle" onclick="set_test_mode()" {% if test_mode %}checked{% endif %}>
+                            </div>
+                        </a>
+                        <a
+                            class="dropdown-item d-flex align-items-center"
+                            href="{{ url_for('login_bp.logout') }}"
+                        >
+                             <label for="" class="form-check-label">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>登出</span>
+                             </label>
+                        </a>
+                    </li>
+                </ul>
+                <!-- End Profile Dropdown Items -->
+            </li>
+            <!-- End Profile Nav -->
+        </ul>
+    </nav>
+    <!-- End Icons Navigation -->
+</header>
+<!-- End Header -->

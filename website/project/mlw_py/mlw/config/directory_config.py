@@ -1,0 +1,13 @@
+import os
+from server import app
+
+LDAP_USERNAME = app.config['LDAP_SYSTEM_USER']
+LDAP_PASSWORD = app.config['LDAP_SYSTEM_AUTH']
+
+WORK_DIRECTORY = os.getcwd()
+EXCEL_OUT_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["APP_EXCEL_OUT_DIR"])
+EXCEL_IN_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["APP_EXCEL_IN_DIR"])
+SOURCE_IN_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["APP_SOURCE_IN_DIR"])
+SOURCE_OUT_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["APP_SOURCE_OUT_DIR"])
+WIN_SETUP_ALL_HEADER_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["WIN_SETUP_ALL_HEADER_FILE"])
+CACHE_FILE_DIRECTORY = os.path.join(WORK_DIRECTORY, app.config["CACHE_FILE_DIR"])

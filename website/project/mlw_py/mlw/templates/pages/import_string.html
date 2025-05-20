@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'] %}
+            {% include "header.html" %}
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+            <form action="{{ url_for('userpage_bp.import_string') }}" method="post">
+                <input type="submit" value="開始" />
+            </form>
+        </main>
+
+        <!-- js area -->
+        {% include "common_js.html" %}
+    </body>
+</html>

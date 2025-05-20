@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/log.css') }}"
+        />
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+            <!-- End Page Title -->
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">字串更新紀錄</h5>
+                                <form id="log-form" class="row">
+                                    <div id="searchType" class="col-sm-2">
+                                        <select name="type" id="search_type" class="form-select">
+                                            <option value="record_event">事件</option>
+                                            <option value="username">使用者</option>
+                                            <option value="type">log類別</option>   
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div id="searchContent">
+                                            <input name="content" type="text" class="form-control" id="search_string" placeholder="請在此輸入要搜尋的log關鍵字...">
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="idsearchBtn" class="col-sm-1">
+                                        <button type="submit" class="btn btn-primary" >搜尋</button>
+                                    </div>
+                                </form>    
+                                <!-- Table with stripped rows -->
+                                <table class="table datatable table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>使用者</th>
+                                            <th>log類別</th>
+                                            <th>事件</th>
+                                            <th
+                                                data-type="date"
+                                                data-format="YYYY/DD/MM"
+                                            >
+                                                時間
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
+                            </div>
+                            <div id="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- End #main -->
+        {% include "modal.html" %}
+
+        <!-- js area -->
+        {% include "common_js.html" %}
+        <script src="{{ url_for('static', filename='js/log.js') }}"></script>
+    </body>
+</html>

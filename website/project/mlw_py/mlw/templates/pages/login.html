@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/loginPage.css') }}"
+        />
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <div class="container" id="container">
+            <div class="form-container sign-in">
+                <form action="#" method="post">
+                    <h1>登入</h1>
+                    <input type="text" placeholder="Username" name="username" />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                    />
+                    {% if error %}
+                    <div id="login-error" class="text-danger">{{ error }}</div>
+                    {% endif %}
+                    <button>登入</button>
+                </form>
+            </div>
+            <div class="explain-container">
+                <div class="explain">
+                    <div class="explain-panel explain-right">
+                        <h1>登入說明</h1>
+                        <p>
+                            使用公司設定的帳號密碼(例:CORP\example)，輸入時"不需要"加CORP\，例如:tester001
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
+
+.drag-area {
+    height: 200px;
+    border: 3px dashed grey;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+.drag-area .upload-header {
+    font-size: 20px;
+    font-weight: 500;
+    color: #34495e;
+}
+
+.drag-area .button {
+    font-size: 20px;
+    font-weight: 500;
+    color: #1683ff;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
+}
+
+.drag-area.active {
+    border: 2px solid #1683ff;
+}
+
+.input {
+    margin-bottom: 5px;
+}
+
+section .rows {
+    margin: 10px;
+    background: #e6e6e6;
+    list-style: none;
+    padding: 15px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+section .rows i {
+    color: #000000;
+    font-size: 30px;
+}
+
+section .details span {
+    font-size: 14px;
+}
+
+.progress-area .rows .content {
+    display: flex;
+    align-items: center;
+}
+
+.progress-area .details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7px;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-left: 15px;
+}
+
+.uploaded-area {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+.uploaded-area.onprogress {
+    max-height: 150px;
+}
+
+.uploaded-area::-webkit-scrollbar {
+    width: 0px;
+}
+
+.uploaded-area .rows .content {
+    display: flex;
+    align-items: center;
+}
+
+.uploaded-area .rows .details {
+    display: flex;
+    margin-left: 15px;
+    flex-direction: column;
+}
+
+.uploaded-area .rows .details .size {
+    color: #404040;
+    font-size: 11px;
+}
+
+.uploaded-area i.fa-check {
+    font-size: 16px;
+}

@@ -1,0 +1,15 @@
+flask
+ldap3
+flask-sqlalchemy
+flask_restful
+pymysql
+python-dotenv
+svn
+pandas
+openpyxl
+chardet
+gunicorn
+xlsxwriter
+redis
+requests
+flask-bcrypt

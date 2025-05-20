@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/multiselect.css') }}"
+        />
+
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">搜尋</h5>
+                                <!-- Search Tabs -->
+                                <ul
+                                    class="nav nav-tabs d-flex"
+                                    id="searchTabjustified"
+                                    role="tablist"
+                                >
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100 active"
+                                            id="home-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#stringid-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="StringID"
+                                            aria-selected="true"
+                                        >
+                                            StringID
+                                        </button>
+                                    </li>
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100"
+                                            id="string-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#string-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="String"
+                                            aria-selected="false"
+                                        >
+                                            String
+                                        </button>
+                                    </li>
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100"
+                                            id="namespace-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#namespace-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="namespace"
+                                            aria-selected="false"
+                                        >
+                                            Namespace
+                                        </button>
+                                    </li>
+                                    <li
+                                        class="nav-item flex-fill"
+                                        role="presentation"
+                                    >
+                                        <button
+                                            class="nav-link w-100"
+                                            id="app-tab"
+                                            data-bs-toggle="tab"
+                                            data-bs-target="#app-justified"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="app"
+                                            aria-selected="false"
+                                        >
+                                            App
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div
+                                    class="tab-content pt-2"
+                                    id="searchContent"
+                                >
+                                    <!-- StringId Tab -->
+                                    <div
+                                        class="tab-pane fade show active"
+                                        id="stringid-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="stringid-tab"
+                                    >
+                                        <div
+                                            class="alert alert-warning alert-dismissible fade show"
+                                            role="alert"
+                                        >
+                                            若要一次搜尋多個StringID請以半形逗號或空格分隔，e.g.
+                                            12345, 23456
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="alert"
+                                                aria-label="Close"
+                                            ></button>
+                                        </div>
+                                        <form
+                                            class="row g-3"
+                                            method="POST"
+                                            id="stringid-form"
+                                        >
+                                            <div class="col-md-12">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="StringID(s)"
+                                                        name="stringID"
+                                                    />
+                                                    <label for="floatingString"
+                                                        >StringID(s)</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    搜尋
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!-- End floating Labels Form -->
+                                    </div>
+                                    <!-- End StringId Tab -->
+                                    <!-- String Tab -->
+                                    <div
+                                        class="tab-pane fade"
+                                        id="string-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="string-tab"
+                                    >
+                                        <form
+                                            class="row g-3"
+                                            method="POST"
+                                            id="string-form"
+                                        >
+                                            <div class="col-md-12">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingString"
+                                                        placeholder="String"
+                                                        name="searchString-string"
+                                                    />
+                                                    <label for="floatingString"
+                                                        >String</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select platform-select"
+                                                        id="stringSearchSelectPlatform"
+                                                        aria-label="平台"
+                                                        name="searchString-platform_id"
+                                                    >
+                                                        <option
+                                                            value="-1"
+                                                            selected
+                                                        >
+                                                            All
+                                                        </option>
+                                                        {% for p_id, p_name in
+                                                        platforms.items() %} {%
+                                                        if p_id == 8 or p_id ==
+                                                        9 %}
+                                                        <option
+                                                            value="{{ p_id }}"
+                                                            disabled
+                                                        >
+                                                            {{ p_name }}
+                                                        </option>
+                                                        {% else %}
+                                                        <option
+                                                            value="{{ p_id }}"
+                                                        >
+                                                            {{ p_name }}
+                                                        </option>
+                                                        {% endif %} {% endfor %}
+                                                    </select>
+                                                    <label
+                                                        for="stringSearchSelectPlatform"
+                                                        >平台</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select"
+                                                        id="stringSearchSelectApp"
+                                                        aria-label="App"
+                                                        name="searchString-app_id"
+                                                    >
+                                                        <option
+                                                            value="-1"
+                                                            selected
+                                                        >
+                                                            All
+                                                        </option>
+                                                    </select>
+                                                    <label
+                                                        for="stringSearchSelectApp"
+                                                        >App</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select"
+                                                        id="languageSelect"
+                                                        aria-label="語言"
+                                                        name="searchString-language"
+                                                    >
+                                                        {% for lang_id,
+                                                        lang_name in
+                                                        languages.items() %}
+                                                        <option
+                                                            value="{{ lang_id }}"
+                                                        >
+                                                            {{ lang_name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label for="languageSelect"
+                                                        >語言</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="case-sensitiveCheck"
+                                                        name="searchString-case-sensitive"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="case-sensitiveCheck"
+                                                    >
+                                                        區分大小寫
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="fuzzySearchCheck"
+                                                        name="searchString-fuzzySearchCheck"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="fuzzySearchCheck"
+                                                    >
+                                                        模糊搜尋
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    搜尋
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- End String Tab -->
+                                    <!-- Namespace Tab -->
+                                    <div
+                                        class="tab-pane fade"
+                                        id="namespace-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="namespace-tab"
+                                    >
+                                        <form
+                                            class="row g-3"
+                                            method="POST"
+                                            id="namespace-form"
+                                        >
+                                            <div class="col-md-12">
+                                                <div class="form-floating">
+                                                    <input
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="floatingNamespace"
+                                                        placeholder="Namespace"
+                                                        name="namespace"
+                                                    />
+                                                    <label
+                                                        for="floatingNamespace"
+                                                        >Namespace</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="fuzzySearchCheck2"
+                                                        name="searchNamespace-fuzzySearchCheck"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="fuzzySearchCheck2"
+                                                    >
+                                                        模糊搜尋
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    搜尋
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!-- End floating Labels Form -->
+                                    </div>
+                                    <!-- End Namespace Tab -->
+                                    <!-- App Tab -->
+                                    <div
+                                        class="tab-pane fade"
+                                        id="app-justified"
+                                        role="tabpanel"
+                                        aria-labelledby="app-tab"
+                                    >
+                                        <form
+                                            class="row g-3"
+                                            method="POST"
+                                            id="app-form"
+                                        >
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select platform-select"
+                                                        id="appSearchSelectPlatform"
+                                                        aria-label="平台"
+                                                        name="searchApp-platform_id"
+                                                    >
+                                                    <option value="-1" selected disabled>
+                                                        --選擇平台--
+                                                    </option>
+                                                    {% for p_id, p_name in
+                                                        platforms.items() %} {%
+                                                        if p_id == 8 or p_id ==
+                                                        9 %}
+                                                        <option
+                                                            value="{{ p_id }}"
+                                                            disabled
+                                                        >
+                                                            {{ p_name }}
+                                                        </option>
+                                                        {% else %}
+                                                        <option
+                                                            value="{{ p_id }}"
+                                                        >
+                                                            {{ p_name }}
+                                                        </option>
+                                                        {% endif %} {% endfor %}
+                                                    </select>
+                                                    <label
+                                                        for="appSearchSelectPlatform"
+                                                        >平台</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select"
+                                                        id="appSearchSelectApp"
+                                                        aria-label="App"
+                                                        name="searchApp-app_id"
+                                                    >
+                                                        <option value="-1" selected disabled>
+                                                            --選擇App--
+                                                        </option>
+                                                    </select>
+                                                    <label
+                                                        for="appSearchSelectApp"
+                                                        >App</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-floating mb-3">
+                                                    <select
+                                                        class="form-select"
+                                                        id="appLanguageSelect"
+                                                        aria-label="語言"
+                                                        name="searchApp-language"
+                                                    >
+                                                    {% for lang_id, lang_name in languages.items() %}
+                                                        <option
+                                                            value="{{ lang_id }}"
+                                                        >
+                                                            {{ lang_name }}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label
+                                                        for="appLanguageSelect"
+                                                        >語言</label
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="notFillCheck"
+                                                        name="searchapp-checkbox"
+                                                    />
+                                                    <label
+                                                        class="form-check-label"
+                                                        for="notFillCheck"
+                                                    >
+                                                        找選擇語言未填入的字串
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="text-center">
+                                                <button
+                                                    type="reset"
+                                                    class="btn btn-secondary"
+                                                >
+                                                    重置
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    搜尋
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- End App Tab -->
+                                </div>
+                                <!-- End Search Tabs -->
+                            </div>
+                        </div>
+                        <div id="searchResults" class="card">
+                            <div id="searchResults-body" class="card-body">
+                                <h5 class="card-title">搜尋結果</h5>
+                                <button id="searchResults-download-btn" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#myModal">
+                                    <i class="bi bi-cloud-download"></i>
+                                    下載搜尋結果Excel
+                                </button>
+                                <div id="scrollContainer">
+                                    <table
+                                    id="searchResults-table"
+                                    class="table table-hover table-striped"
+                                >
+                                </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        <!-- include modal -->
+        {% include "modal.html" %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/search.css') }}"
+        />
+        <!-- js area -->
+        {% include "common_js.html" %}
+        <!-- my js -->
+        <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/multiselect.js') }}"></script>
+    </body>
+</html>

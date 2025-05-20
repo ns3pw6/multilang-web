@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- css area -->
+        {% include "common_css.html" %}
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/proofread.css') }}"
+        />
+        <title>多國語系統</title>
+    </head>
+
+    <body>
+        <!-- include header -->
+        {% with username=session['username'], test_mode=session['test_mode'] %} 
+            {% include "header.html" %} 
+        {% endwith %}
+
+        <!-- include sidebar -->
+        {% include "sidebar.html" %}
+
+        <!-- include page title -->
+        <main id="main" class="main">
+            {% include "page_title.html" %}
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">中文校對</h5>
+                                <form id="proofread-form" class="row">
+                                    <div id="searchType" class="col-sm-2">
+                                        <select name="type" id="search_type" class="form-select">
+                                            <option value="proj_name">專案名稱</option>
+                                            <option value="proj_id">專案編號</option>
+                                            <option value="maintainer">負責人</option>
+                                            <option value="reviewer">Reviewer</option>  
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div id="searchContent">
+                                            <input name="content" type="text" class="form-control" id="search_string" placeholder="請在此輸入要搜尋的專案關鍵字...">
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="searchBtn" class="col-sm-1">
+                                        <button type="submit" class="btn btn-primary" >搜尋</button>
+                                    </div>
+                                </form>
+                                <div class="row g-3 in p-3">
+                                    <div>
+                                        <button id="newProjectBtn" type="button" class="btn btn-primary rounded-pill">
+                                            <i class="bi bi-pencil-square">新增專案</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Table with stripped rows -->
+                                <table class="table datatable table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%">編號</th>
+                                            <th style="width: 70%;">專案名稱</th>
+                                            <th style="width: 10%">負責人</th>
+                                            <th style="width: 10%">Reviewer</th>
+                                            <th style="width: 5%">移除</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for project_id, project_content in project_data.items() %}
+                                            <tr>
+                                                <td>{{ project_id }}</td>
+                                                <td>
+                                                    <a href="{{ url_for('proofread_bp.handle_project_request', project_id=project_id) }}">
+                                                        {{  project_content['project_name']  }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ project_content['person_in_charge'] }}</td>
+                                                <td>{{ project_content['reviewer'] }}</td>
+                                                <td>
+                                                    <button type="button" 
+                                                            class="btn btn-danger" 
+                                                            onclick="generateModalContent('remove', '確定要移除{{project_content['project_name']}}嗎?', {{project_id}})">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <!-- End Table with stripped rows -->
+                            </div>
+                            <div id="pagination" class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                    {% if current_page > 1 %}
+                                        <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=current_page-1) }}"><</a></li>
+                                    {% else %}
+                                        <li class="page-item disabled"><span class="page-link"><</span></li>
+                                    {% endif %}
+                            
+                                    {% if total_pages <= 5 %}
+                                        {% for page_num in page_range %}
+                                            <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                                <a class="page-link" href="{{ url_for('userpage_bp.proofread', page=page_num) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if current_page <= 3 %}
+                                            {% for page_num in range(1, 6) %}
+                                                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                                    <a class="page-link" href="{{ url_for('userpage_bp.proofread', page=page_num) }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endfor %}
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=total_pages) }}">{{ total_pages }}</a></li>
+                                        {% elif current_page >= total_pages - 2 %}
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=1) }}">1</a></li>
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            {% for page_num in range(total_pages-4, total_pages+1) %}
+                                                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                                    <a class="page-link" href="{{ url_for('userpage_bp.proofread', page=page_num) }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=1) }}">1</a></li>
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            {% for page_num in range(current_page-2, current_page+3) %}
+                                                <li class="page-item {% if page_num == current_page %}active{% endif %}">
+                                                    <a class="page-link" href="{{ url_for('userpage_bp.proofread', page=page_num) }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endfor %}
+                                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=total_pages) }}">{{ total_pages }}</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                            
+                                    {% if current_page < total_pages %}
+                                        <li class="page-item"><a class="page-link" href="{{ url_for('userpage_bp.proofread', page=current_page+1) }}">></a></li>
+                                    {% else %}
+                                        <li class="page-item disabled"><span class="page-link">></span></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        {% include "modal.html" %}
+        <!-- js area -->
+        {% include "common_js.html" %}
+        <script src="{{ url_for('static', filename='js/proofread.js') }}"></script>
+    </body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+      rel="stylesheet"
+    />
+    <!-- css area -->
+    {% include "common_css.html" %}
+    <title>多國語系統</title>
+  </head>
+
+  <body>
+    <!-- include header -->
+    {% with username=session['username'], test_mode=session['test_mode'] %} 
+        {% include "header.html" %} 
+    {% endwith %}
+
+    <!-- include sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- include page title -->
+    <main id="main" class="main">
+      {% include "page_title.html" %}
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">下載未翻譯Excel</h5>
+
+                <!-- 未翻Excel Form -->
+                <form class="row g-3" id="due-form">
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="due-p_id"
+                        aria-label="平台"
+                        name="select_platform_id"
+                      >
+                        <option value="-1" selected>All</option>
+                        {% for p_id, p_name in platforms.items() %} {% if p_id
+                        == 8 or p_id == 9 %}
+                        <option value="{{ p_id }}" disabled>
+                          {{ p_name }}
+                        </option>
+                        {% else %}
+                        <option value="{{ p_id }}">{{ p_name }}</option>
+                        {% endif %} {% endfor %}
+                      </select>
+                      <label for="due-p_id">平台</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="due-app_id"
+                        aria-label="App"
+                        name="select_app_id"
+                      >
+                        <option value="-1" selected>All</option>
+                      </select>
+                      <label for="due-app_id">App</label>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="reset" class="btn btn-secondary">重置</button>
+                    <button type="submit" class="btn btn-primary">下載</button>
+                  </div>
+                </form>
+                <!-- End 未翻Excel Form -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">下載完整Excel</h5>
+
+                <!-- 完整Excel Form -->
+                <form class="row g-3" id="dfe-form">
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="dfe-p_id"
+                        aria-label="平台"
+                        name="select_platform_id"
+                      >
+                        <option value="-1" selected>All</option>
+                        {% for p_id, p_name in platforms.items() %} {% if p_id
+                        == 8 or p_id == 9 %}
+                        <option value="{{ p_id }}" disabled>
+                          {{ p_name }}
+                        </option>
+                        {% else %}
+                        <option value="{{ p_id }}">{{ p_name }}</option>
+                        {% endif %} {% endfor %}
+                      </select>
+                      <label for="dfe-p_id">平台</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="dfe-app_id"
+                        aria-label="App"
+                        name="select_app_id"
+                      >
+                        <option value="-1" selected>All</option>
+                      </select>
+                      <label for="dfe-app_id">App</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="download_language"
+                        aria-label="App"
+                        name="download_language"
+                      >
+                        <option value="-1" selected>All</option>
+                        {% for lang_id, lang_name in languages.items() %}
+                            <option value="{{ lang_id }}">{{ lang_name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="download_language">語言</label>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="reset" class="btn btn-secondary">重置</button>
+                    <button type="submit" class="btn btn-primary">下載</button>
+                  </div>
+                </form>
+                <!-- End 完整Excel Form -->
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">產出SVN字串檔</h5>
+
+                <!-- SVN字串檔 Form -->
+                <form class="row g-3" id="svn-form">
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="svn-p_id"
+                        aria-label="平台"
+                        name="select_platform_id"
+                      >
+                        <option value="-1" selected disabled>
+                          --選擇平台--
+                        </option>
+                        {% for p_id, p_name in platforms.items() %} {% if p_id
+                        == 8 or p_id == 9 %}
+                        <option value="{{ p_id }}" disabled>
+                          {{ p_name }}
+                        </option>
+                        {% else %}
+                        <option value="{{ p_id }}">{{ p_name }}</option>
+                        {% endif %} {% endfor %}
+                      </select>
+                      <label for="svn-p_id">平台</label>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-floating mb-3">
+                      <select
+                        class="form-select"
+                        id="svn-app_id"
+                        aria-label="App"
+                        name="select_app_id"
+                      >
+                        <option value="-1" selected disabled>--選擇App--</option>
+                      </select>
+                      <label for="svn-app_id">App</label>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="reset" class="btn btn-secondary">重置</button>
+                    <button type="submit" class="btn btn-primary">下載</button>
+                  </div>
+                </form>
+                <!-- End SVN字串檔 Form -->
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">下載特定時間新增所有未翻Excel</h5>
+
+                <!-- time Form -->
+                <form class="row g-3" id="time-form">
+                  <div class="col-sm-12">
+                    <div class="row mb-3">
+                      <label for="inputDate" class="col-sm-12 col-form-label">起始日期:</label>
+                      <div class="col-sm-12">
+                        <input type="date" class="form-control" name="start_time">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="row mb-3">
+                      <label for="inputDate" class="col-sm-12 col-form-label">結束日期:</label>
+                      <div class="col-sm-12">
+                        <input type="date" class="form-control" name="end_time">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <button type="reset" class="btn btn-secondary">重置</button>
+                    <button type="submit" class="btn btn-primary">下載</button>
+                  </div>
+                </form>
+                <!-- End time Form -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    {% include "modal.html" %}
+
+    <!-- js area -->
+    {% include "common_js.html" %}
+    <!-- my js -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/download.js') }}"></script>
+  </body>
+</html>

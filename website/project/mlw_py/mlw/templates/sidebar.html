@@ -1,0 +1,78 @@
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not home}}" href="{{ url_for('mlw') }}">
+                <i class="bi bi-grid"></i>
+                <span>Home</span>
+            </a>
+        </li>
+        <!-- End Home Nav -->
+        <li class="nav-heading">Pages</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not search}}" href="{{ url_for('userpage_bp.search') }}">
+                <i class="bi bi-search"></i>
+                <span>搜尋</span>
+            </a>
+        </li>
+        <!-- End Search Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not download}}" href="{{ url_for('userpage_bp.download') }}">
+                <i class="bi bi-cloud-download"></i>
+                <span>下載</span>
+            </a>
+        </li>
+        <!-- End Download Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not upload}}" href="{{ url_for('userpage_bp.upload') }}">
+                <i class="bi bi-cloud-upload"></i>
+                <span>上傳</span>
+            </a>
+        </li>
+        <!-- End Upload Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not check}}" href="{{ url_for('userpage_bp.check') }}">
+                <i class="bi bi-check2-circle"></i>
+                <span>檢查字串格式</span>
+            </a>
+        </li>
+        <!-- End Upload Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not app_setting}}" href="{{ url_for('userpage_bp.app_setting') }}">
+                <i class="ri-app-store-line"></i>
+                <span>App新增/修改</span>
+            </a>
+        </li>
+        <!-- End String App Setting Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not log}}" href="{{ url_for('userpage_bp.log') }}">
+                <i class="bi bi-file-earmark-diff"></i>
+                <span>字串更新紀錄</span>
+            </a>
+        </li>
+        <!-- End String Update Record Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not proofread}}" href="{{ url_for('userpage_bp.proofread') }}">
+                <i class="bi bi-card-checklist"></i>
+                <span>中文校對</span>
+            </a>
+        </li>
+        <!-- End Proofread Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link {{'collapsed' if not tutorial}}" href="{{ url_for('userpage_bp.tutorial') }}">
+                <i class="bi bi-question-circle"></i>
+                <span>使用說明</span>
+            </a>
+        </li>
+        <!-- End Tutorial Page Nav -->
+    </ul>
+</aside>
+<!-- End Sidebar-->

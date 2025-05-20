@@ -1,0 +1,34 @@
+.select-all{
+    width: 30px;
+}
+
+.table {
+    table-layout: fixed;
+}
+
+.table td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table th {
+    vertical-align: middle;
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2;
+    z-index: 10;
+}
+
+#BtnContainer {
+    text-align: right;
+}
+
+#excel-upload-error-container {
+    max-height: 900px; 
+    overflow-y: auto; 
+    border: 1px solid #fff;
+}
+
+.form-control {
+    margin-top: 0.5rem
+}
