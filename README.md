@@ -4,7 +4,7 @@
 
 ## 專案簡介
 
-`mlw_py` 是一個用於管理多國語言翻譯的網站，提供了多種功能，包括語言管理、字串校對、檢查字串格式、上傳與下載翻譯文件等。此專案基於 Flask 框架開發，並整合了前端與後端功能。
+`multilang-web` 是一個用於管理多國語言翻譯的網站，提供了多種功能，包括語言管理、字串校對、檢查字串格式、上傳與下載翻譯文件等。此專案基於 Flask 框架開發，並整合了前端與後端功能。
 
 ---
 
@@ -73,8 +73,8 @@
 
 1. 複製專案
 ```bash
-git clone https://github.com/ns3pw6/mlw_py.git
-cd mlw_py
+git clone https://github.com/ns3pw6/multilang-web.git
+cd multilang-web
 ```
 
 2. 啟動服務
